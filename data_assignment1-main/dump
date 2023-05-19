@@ -1,0 +1,33 @@
+public void SELECT(String command) throws IOException {
+        String[] arrOfCommand = command.split("[, ( )]+");
+        String tableName = arrOfCommand[arrOfCommand.length-1];
+        ArrayList<String> arrOfCommandAsList = new ArrayList<>(Arrays.asList(arrOfCommand));
+        int indexOfFROM = arrOfCommandAsList.indexOf("FROM");
+
+        // ArrayList of Columns to show
+        HashMap<String, Integer> columnsToShowAndItsIndex = new HashMap<>();
+        for(int i=1; i<indexOfFROM; i++)
+        {
+            columnsToShowAndItsIndex.put(arrOfCommandAsList.get(i), arrOfCommandAsList.indexOf(arrOfCommandAsList.get(i)));
+        }
+        System.out.println(columnsToShowAndItsIndex);
+
+        BufferedReader reader = new BufferedReader(new FileReader(path + "/" + tableName + ".txt"));
+        String line;
+        ArrayList<String> selectedColumns = new ArrayList<>();
+
+        while((line = reader.readLine()) != null)
+        {
+            String str = "";
+            for(Map.Entry<String, Integer> entry: columnsToShowAndItsIndex.entrySet())
+            {
+                str = str + line.split("  ")[entry.getValue()] + "  ";
+            }
+            selectedColumns.add(str);
+            line = reader.readLine();
+        }
+
+        for(String str: selectedColumns){
+            System.out.println(str);
+            }
+            }
